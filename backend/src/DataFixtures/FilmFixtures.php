@@ -9,11 +9,13 @@ use Faker;
 
 class FilmFixtures extends Fixture
 {
+    public const CATEGORIE_FILM_REFERENCE = 'categorie-film';
+
     public function load(PersistenceObjectManager $manager)
     {
         $faker = Faker\Factory::create('fr_FR');
-        // on crée 4 films avec des noms, descriptions, notes
-        for ($i = 0; $i < 5; $i++) {
+        // on crée 100 films avec des noms, descriptions, notes
+        for ($i = 0; $i < 100; $i++) {
             $films = new Film();
             $films->setNom($faker->name);
             $films->setDescription($faker->paragraph(rand(1,5)), true);
@@ -21,6 +23,9 @@ class FilmFixtures extends Fixture
             $films->setNote($faker->numberBetween(0,20));
 
             $manager->persist($films);
+
+            $this->addReference(self::CATEGORIE_FILM_REFERENCE . '_'. $i, $films);
+
         }
 
         $manager->flush();
