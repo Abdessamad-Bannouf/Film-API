@@ -24,7 +24,8 @@
         "symfony/twig-bundle": "6.3.*",
         "symfony/validator": "6.3.*",
         "symfony/yaml": "6.3.*",
-        "willdurand/hateoas": "^3.9"
+        "willdurand/hateoas": "^3.9",
+        "willdurand/hateoas-bundle": "^2.5"
     },
     "config": {
         "allow-plugins": {

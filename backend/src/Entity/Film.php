@@ -7,33 +7,73 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Hateoas\Configuration\Annotation as Hateoas;
+use JMS\Serializer\Annotation as Serializer;
 
+/**
+ * @Serializer\ExclusionPolicy("ALL")
+ * @Hateoas\Relation(
+ *     name = "self",
+ *     href = @Hateoas\Route(
+ *         "app_api_film_single",
+ *         parameters = { "id" = "expr(object.getId())" },
+ *         absolute = true
+ *     ),
+ *     exclusion = @Hateoas\Exclusion(groups={"film:single", "film:list"})
+ * )
+ * 
+ * @Hateoas\Relation(
+ *     name = "categories",
+ *     embedded = @Hateoas\Embedded(
+ *         "expr(object.getCategories())",
+ *         exclusion = @Hateoas\Exclusion(groups={"film:single", "film:list"})
+ *     )
+ * )
+ */
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
 class Film
 {
+    /**
+     * @Serializer\Expose
+     * @Serializer\Groups({"film:list", "film:single"})
+     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['list'])]
     private ?int $id = null;
 
-    #[Groups(['list','single', 'add', 'delete', 'patch', 'put'])]
+    /**
+     * @Serializer\Expose
+     * @Serializer\Groups({"film:list", "film:single"})
+     */
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[Groups(['list','single', 'add'])]
+    /**
+     * @Serializer\Expose
+     * @Serializer\Groups({"film:list", "film:single"})
+     */
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[Groups(['list','single', 'add'])]
+    /**
+     * @Serializer\Expose
+     * @Serializer\Groups({"film:list", "film:single"})
+     */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[Groups(['list','single', 'add'])]
+    /**
+     * @Serializer\Expose
+     * @Serializer\Groups({"film:list", "film:single"})
+     */
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $note = null;
 
+    /**
+     * @Serializer\Expose
+     * @Serializer\Groups({"film:single"})
+     */
     #[ORM\ManyToMany(targetEntity: Categorie::class, mappedBy: 'films')]
     private Collection $categories;
 
