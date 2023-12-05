@@ -4,12 +4,13 @@ namespace App\DataFixtures;
 
 use App\Entity\Categorie;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager as PersistenceObjectManager;
 use Faker;
 
-class CategorieFixtures extends Fixture implements DependentFixtureInterface
+class CategorieFixtures extends Fixture
 {
+    public const FILM_CATEGORIE_REFERENCE = 'film-categorie';
+
     public function load(PersistenceObjectManager $manager)
     {
         $faker = Faker\Factory::create('fr_FR');
@@ -18,20 +19,11 @@ class CategorieFixtures extends Fixture implements DependentFixtureInterface
             $categorie = new Categorie();
             $categorie->setNom($faker->name);
 
-            for($j=0; $j < rand(1, 100); $j++) {
-                $categorie->addFilm($this->getReference(FilmFixtures::CATEGORIE_FILM_REFERENCE . '_'. $j));
-            }
-
             $manager->persist($categorie);
+
+            $this->addReference(self::FILM_CATEGORIE_REFERENCE . '_'. $i, $categorie);
         }
 
         $manager->flush();
-    }
-
-    public function getDependencies()
-    {
-        return [
-            FilmFixtures::class,
-        ];
     }
 }

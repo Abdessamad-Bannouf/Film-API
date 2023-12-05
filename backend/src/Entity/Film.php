@@ -35,7 +35,7 @@ class Film
 {
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:list", "film:single"})
+     * @Serializer\Groups({"film:list", "film:single", "film:delete"})
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -44,37 +44,37 @@ class Film
 
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:list", "film:single"})
+     * @Serializer\Groups({"film:list", "film:single", "film:delete", "film:patch", "film:put"})
      */
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:list", "film:single"})
+     * @Serializer\Groups({"film:list", "film:single", "film:delete", "film:patch", "film:put"})
      */
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:list", "film:single"})
+     * @Serializer\Groups({"film:list", "film:single", "film:delete", "film:patch", "film:put"})
      */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:list", "film:single"})
+     * @Serializer\Groups({"film:list", "film:single", "film:delete", "film:patch", "film:put"})
      */
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $note = null;
 
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:single"})
+     * @Serializer\Groups({"film:single", "film:patch", "film:put"})
      */
-    #[ORM\ManyToMany(targetEntity: Categorie::class, mappedBy: 'films')]
+    #[ORM\ManyToMany(targetEntity: Categorie::class, mappedBy: 'films', cascade: ["persist"])]
     private Collection $categories;
 
     public function __construct()

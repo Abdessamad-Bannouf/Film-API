@@ -16,7 +16,7 @@ class Categorie
 {
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:list", "film:single"})
+     * @Serializer\Groups({"film:list", "film:single", "film:patch", "film:put"})
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,7 +25,7 @@ class Categorie
 
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:list", "film:single"})
+     * @Serializer\Groups({"film:list", "film:single", "film:patch", "film:put"})
      */
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
