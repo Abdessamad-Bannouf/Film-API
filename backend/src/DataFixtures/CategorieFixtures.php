@@ -18,7 +18,9 @@ class CategorieFixtures extends Fixture implements DependentFixtureInterface
             $categorie = new Categorie();
             $categorie->setNom($faker->name);
 
-            $categorie->addFilm($this->getReference(FilmFixtures::CATEGORIE_FILM_REFERENCE . '_'. mt_rand(0,49)));
+            for($j=0; $j < rand(1, 100); $j++) {
+                $categorie->addFilm($this->getReference(FilmFixtures::CATEGORIE_FILM_REFERENCE . '_'. $j));
+            }
 
             $manager->persist($categorie);
         }

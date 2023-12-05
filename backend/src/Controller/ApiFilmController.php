@@ -5,30 +5,24 @@ namespace App\Controller;
 use App\Entity\Film;
 use App\Repository\FilmRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use JMS\Serializer\SerializerInterface;
+use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 class ApiFilmController extends AbstractController
 {
     private $filmRepository;
     private $em;
-    private $encoders;
-    private $normalizers;
     private $serializer;
 
-    public function __construct(FilmRepository $filmRepository, EntityManagerInterface $em)
+    public function __construct(FilmRepository $filmRepository, EntityManagerInterface $em, SerializerInterface $serializer)
     {
         $this->filmRepository = $filmRepository;
         $this->em = $em;
-        $this->encoders = [new XmlEncoder(), new JsonEncoder()];
-        $this->normalizers = [new ObjectNormalizer()];
-        $this->serializer = new Serializer($this->normalizers, $this->encoders);
+        $this->serializer = $serializer;
     }
 
 
@@ -37,7 +31,7 @@ class ApiFilmController extends AbstractController
     {
         $films = $this->filmRepository->findAll();
 
-        $jsonContent = $this->serializer->serialize($films, 'json', ['groups' => ['list']]);
+        $jsonContent = $this->serializer->serialize($films, 'json', SerializationContext::create()->setGroups(array('film:list')));
 
         return new Response($jsonContent, '200', [
             "Content-Type' => 'application/json"
@@ -49,7 +43,7 @@ class ApiFilmController extends AbstractController
     {
         $films = $this->filmRepository->findOneBy(['id' => $film]);
 
-        $jsonContent = $this->serializer->serialize($films, 'json', ['groups' => ['single']]);
+        $jsonContent = $this->serializer->serialize($films, 'json', SerializationContext::create()->setGroups(array('film:single')));
 
         return new Response($jsonContent, '200', [
             "Content-Type' => 'application/json"
@@ -71,7 +65,7 @@ class ApiFilmController extends AbstractController
         $this->em->persist($film);
         $this->em->flush();
 
-        $jsonContent = $this->serializer->serialize($film, 'json', ['groups' => ['add']]);
+        $jsonContent = $this->serializer->serialize($film, 'json', SerializationContext::create()->setGroups(array('film:add')));
 
         return new Response($jsonContent, '201', [
             "Content-Type' => 'application/json"
@@ -86,7 +80,7 @@ class ApiFilmController extends AbstractController
         $film = $this->filmRepository->findOneBy(['id' => $film]);
 
         if($film) {
-            $this->serializer->serialize($film, 'json', ['groups' => ['delete']]);
+            $this->serializer->serialize($film, 'json', SerializationContext::create()->setGroups(array('film:delete')));
 
             $this->em->remove($film);
             $this->em->flush();
@@ -115,7 +109,7 @@ class ApiFilmController extends AbstractController
                 $this->em->persist($film);
             }
 
-            $this->serializer->serialize($film, 'json', ['groups' => ['patch']]);
+            $this->serializer->serialize($film, 'json', SerializationContext::create()->setGroups(array('film:patch')));
 
             $this->em->flush();
 
@@ -150,7 +144,7 @@ class ApiFilmController extends AbstractController
                 $this->em->persist($film);
             }
 
-            $this->serializer->serialize($film, 'json', ['groups' => ['put']]);
+            $this->serializer->serialize($film, 'json', SerializationContext::create()->setGroups(array('film:put')));
 
             $this->em->flush();
             

@@ -6,15 +6,27 @@ use App\Repository\CategorieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
+/**
+ * @Serializer\ExclusionPolicy("ALL")
+ */
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 class Categorie
 {
+    /**
+     * @Serializer\Expose
+     * @Serializer\Groups({"film:list", "film:single"})
+     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * @Serializer\Expose
+     * @Serializer\Groups({"film:list", "film:single"})
+     */
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
