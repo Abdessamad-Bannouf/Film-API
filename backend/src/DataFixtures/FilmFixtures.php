@@ -9,8 +9,6 @@ use Faker;
 
 class FilmFixtures extends Fixture
 {
-    public const CATEGORIE_FILM_REFERENCE = 'categorie-film';
-
     public function load(PersistenceObjectManager $manager)
     {
         $faker = Faker\Factory::create('fr_FR');
@@ -21,11 +19,9 @@ class FilmFixtures extends Fixture
             $films->setDescription($faker->paragraph(rand(1,5)), true);
             $films->setDate($faker->dateTimeBetween('2021-01-01', 'now'));
             $films->setNote($faker->numberBetween(0,20));
+            $films->addCategory($this->getReference(CategorieFixtures::FILM_CATEGORIE_REFERENCE . '_'. mt_rand(0,9)));
 
             $manager->persist($films);
-
-            $this->addReference(self::CATEGORIE_FILM_REFERENCE . '_'. $i, $films);
-
         }
 
         $manager->flush();

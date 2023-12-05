@@ -47,11 +47,19 @@ API's CRUD de films
             - Metre un id (de 1 à 5)
 
       - Requête PATCH Modifie certains éléments = > localhost:9000/api/film/{id}
-            - Metre un id (de 1 à 5)
+            - La personne peut décider d'ajouter ou de supprimer une catégorie liée à un film grâce au paramètre action qui est égale à "add" ou "delete".
+            - Metre un id (de 1 à 100)
             - allez dans l'onglet body -> raw ettre un json comme celui-ci :
             {
                 "nom": "Alien",
-                "note": 19
+                "note": 19,
+                "category": 
+                  [
+                        {
+                              "action": "add",
+                              "id": 3
+                        }
+                  ]
             }
 
       - Requête PUT Modifie en écrasant tout les données = > localhost:9000/api/film/{id}
@@ -63,4 +71,9 @@ API's CRUD de films
                 "date": "2005-04-09",
                 "note": 20
             }
+
+
+# Documentation pour les API's : 
+
+    La doc pour les API's se trouve à l'url : http://localhost:9000/api/doc
 
