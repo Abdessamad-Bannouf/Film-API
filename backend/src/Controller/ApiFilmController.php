@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Film;
 use App\Repository\FilmRepository;
+use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
 use JMS\Serializer\SerializationContext;
@@ -27,15 +28,15 @@ class ApiFilmController extends AbstractController
 
 
     #[Route('/api/film', name: 'app_api_film_list', methods: 'get')]
-    public function list(): Response
+    public function list(PaginationService $paginationService): Response
     {
         $films = $this->filmRepository->findAll();
 
-        $jsonContent = $this->serializer->serialize($films, 'json', SerializationContext::create()->setGroups(array('film:list')));
-
-        return new Response($jsonContent, '200', [
-            "Content-Type' => 'application/json"
-        ]);
+        //$jsonContent = $this->serializer->serialize($films, 'json', SerializationContext::create()->setGroups(array('film:list')));
+        
+        $response = $paginationService->getPagination($films, 10, 'film:list');
+        
+        return $response;
     }
 
     #[Route('/api/film/{id}', name: 'app_api_film_single', methods: 'get')]
