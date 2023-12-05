@@ -35,7 +35,7 @@ class Film
 {
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:list", "film:single", "film:delete"})
+     * @Serializer\Groups({"film:list", "film:single", "film:delete", "categorie:single", "categorie:list"})
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -44,28 +44,28 @@ class Film
 
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:list", "film:single", "film:delete", "film:patch", "film:put"})
+     * @Serializer\Groups({"film:list", "film:single", "film:delete", "film:patch", "film:put", "categorie:single", "categorie:list"})
      */
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:list", "film:single", "film:delete", "film:patch", "film:put"})
+     * @Serializer\Groups({"film:list", "film:single", "film:delete", "film:patch", "film:put", "categorie:single", "categorie:list"})
      */
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:list", "film:single", "film:delete", "film:patch", "film:put"})
+     * @Serializer\Groups({"film:list", "film:single", "film:delete", "film:patch", "film:put", "categorie:single", "categorie:list"})
      */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
     /**
      * @Serializer\Expose
-     * @Serializer\Groups({"film:list", "film:single", "film:delete", "film:patch", "film:put"})
+     * @Serializer\Groups({"film:list", "film:single", "film:delete", "film:patch", "film:put", "categorie:single", "categorie:list"})
      */
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $note = null;
