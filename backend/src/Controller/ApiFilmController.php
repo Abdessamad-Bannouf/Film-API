@@ -15,6 +15,7 @@ use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiFilmController extends AbstractController
@@ -44,15 +45,26 @@ class ApiFilmController extends AbstractController
      * )
      */
     #[Route('/api/film', name: 'app_api_film_list', methods: 'get')]
-    public function list(PaginationService $paginationService): Response
+    public function list(PaginationService $paginationService, #[MapQueryParameter] string $nom = null, #[MapQueryParameter] string $description = null): Response
     {
         $films = $this->filmRepository->findAll();
 
-        //$jsonContent = $this->serializer->serialize($films, 'json', SerializationContext::create()->setGroups(array('film:list')));
+        if($nom === null AND $description === null) {
+            $response = $paginationService->getPagination($films, 10, 'film:list');
+            return $response;
+        }
         
-        $response = $paginationService->getPagination($films, 10, 'film:list');
+        if($nom !== null)
+            $films = $this->filmRepository->findBy(['nom' => $nom]);
+
+        if($description !== null)
+            $films = $this->filmRepository->findBy(['description' => $description]);
+
+        $jsonContent = $this->serializer->serialize($films, 'json', SerializationContext::create()->setGroups(array('film:list')));
         
-        return $response;
+        return new Response($jsonContent, '200', [
+            "Content-Type' => 'application/json"
+        ]);
     }
 
     /** 

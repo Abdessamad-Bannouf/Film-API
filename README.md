@@ -30,6 +30,9 @@ API's CRUD de films
     ● Lancez les requêtes :
 
       - Requête GET Affiche une liste de films => localhost:9000/api/film
+            - la personne peut aussi faire une recherche à l'adresse suivante par :
+                nom : localhost:9000/api/film?nom=Un nom de film
+                description : localhost:9000/api/film?description=Une description de film
 
       - Requête GET Affiche un film => localhost:9000/api/film/{id}
             - Metre un id (de 1 à 5)
