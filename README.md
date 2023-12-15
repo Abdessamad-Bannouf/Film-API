@@ -33,6 +33,10 @@ API's CRUD de films
             - la personne peut aussi faire une recherche à l'adresse suivante par :
                 nom : localhost:9000/api/film?nom=Un nom de film
                 description : localhost:9000/api/film?description=Une description de film
+                
+            - on peut aussi paginer les films avec 'page' comme query url, exemple :
+                  localhost:9000/api/film?page=1 (pour les 10 premiers)
+                  localhost:9000/api/film?page=2 (de 11 à 20) etc ...
 
       - Requête GET Affiche un film => localhost:9000/api/film/{id}
             - Metre un id (de 1 à 5)
